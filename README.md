@@ -112,11 +112,51 @@ ILA: used as a waveform viewer
 ![image](https://user-images.githubusercontent.com/85632581/171061199-8db46d7e-648d-4954-a2bb-d77f29fa429b.png)
 
 
+6. Add constrints.xdc file
 
-7. 
+![image](https://user-images.githubusercontent.com/85632581/171061580-43f008d5-71a8-400c-b037-a02bb128e58b.png)
 
 
-3. 
+7. Run Synthesis
+8. Run Implementation
+![image](https://user-images.githubusercontent.com/85632581/171062074-5b3858e7-6ba2-49e1-acb2-ed4cac19d6a9.png)
+
+Once completing the implementation,
+9. Check for setup and hold timing violation. 
+
+Open the implemented design
+
+![image](https://user-images.githubusercontent.com/85632581/171062200-c6b5c7a7-4a57-4e4a-a244-c1b867c8afe0.png)
+
+The next image show the truth and false paths:
+
+![image](https://user-images.githubusercontent.com/85632581/171062438-fdc2bcb4-eaa2-4cc6-bb0c-3474b039be2d.png)
+
+Green: Truth, Red: false.
+
+Observation: Faced hold violation in false path.
+
+Solution: cretae false path constrains for paths 71 and 72:
+
+`set_false_path -hold from [get_pins ] to [get_pins ]`
+
+`set_false_path -hold -from [get_pins uut1/inst/plle2_adv_inst/CLKOUT0] -to [get_pins uut3/inst/ila_core_inst/*/D]`
+`set_false_path -hold -from [get_pins uut1/inst/plle2_adv_inst/CLKOUT0] -to [get_pins uut3/inst/ila_core_inst/u_trig/U_TM/N_DDR_MODE.G_NMU[2].U_M/allx_typeA_match_detection.ltlib_v1_0_0_allx_typeA_inst/probeDelay1_reg[0]/D]`
+
+After adding the constraints a new run of synthesis and implementation is done.
+
+This time there is no timing violations.
+
+![image](https://user-images.githubusercontent.com/85632581/171065383-0373f7b3-2ba5-4424-8e22-17da65183b79.png)
+
+
+10. Generate the bitstream and program the FPGA:
+![image](https://user-images.githubusercontent.com/85632581/171065533-6babeed2-e89a-4eef-ad9a-1ab708d1018a.png)
+
+To program the FPGA and see the ILA we need to have a board available.
+
+Open question: How to probe the core_clk on ILA and verify that frequency of core_clk is 100 MHz?
+Answer: The frequency of the clock used for the ILA must be at least equal (ideally higher) than the frequency of the signals the ILA is monitoring. In this case, the clock of the ILA is the main_clockwhich is three times slower than core_clk. So, to verify that core clock is Ok, core_clock could be used as the reference clock for ILA. Alternatively, the PLL could have an extra output of 200 MHz for instance and use it for the ILA clock.
 
 
 

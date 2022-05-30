@@ -161,7 +161,7 @@ To program the FPGA and see the ILA we need to have a board available.
 
 How to probe the core_clk on ILA and verify that frequency of core_clk is 100 MHz?
 
-Answer: The frequency of the clock used for the ILA must be at least equal (ideally higher) than the frequency of the signals the ILA is monitoring. In this case, the clock of the ILA is the main_clockwhich is three times slower than core_clk. So, to verify that core clock is Ok, core_clock could be used as the reference clock for ILA. Alternatively, the PLL could have an extra output of 200 MHz for instance and use it for the ILA clock.
+Answer: The frequency of the clock used for the ILA must be at least equal (ideally higher) than the frequency of the signals the ILA is monitoring. In this case, the clock of the ILA is the main_clock which is three times slower than core_clk. So, to verify that core clock is Ok, core_clock could be used as the reference clock for ILA. Alternatively, the PLL could have an extra output, for instance of 200 MHz, and use it for the ILA clock.
 
 
 
